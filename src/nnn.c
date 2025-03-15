@@ -197,8 +197,7 @@
 #undef NEWLINE
 #define NEWLINE         "\n"
 #define NEWLINE_CHAR    '\n'
-#undef NUL
-#define NUL             '\0'
+#define NUL_CHAR        '\0'
 #define REGEX_MAX       48
 #define ENTRY_INCR      64 /* Number of dir 'entry' structures to allocate per shot */
 #define NAMEBUF_INCR    0x800 /* 64 dir entries at once, avg. 32 chars per file name = 64*32B = 2KB */
@@ -1582,7 +1581,7 @@ static uint_t entries_in_file(int fd, char *buf, size_t buflen, const char delim
 			count += (buf[--len] == delim);
 
 	/* For all use cases 0 count is considered as error */
-	return ((len < 0) ? 0 : ((delim != NUL) ? count : ++count));
+	return ((len < 0) ? 0 : ((delim != NUL_CHAR) ? count : ++count));
 }
 
 static char confirm_force(bool selection, bool use_trash)
@@ -1594,7 +1593,7 @@ static char confirm_force(bool selection, bool use_trash)
 		int fd = open(selpath, O_RDONLY);
 
 		if (fd != -1) {
-			nselected = entries_in_file(fd, str, 300, NUL);
+			nselected = entries_in_file(fd, str, 300, NUL_CHAR);
 			close(fd);
 		} else {
 			printwarn(NULL);
